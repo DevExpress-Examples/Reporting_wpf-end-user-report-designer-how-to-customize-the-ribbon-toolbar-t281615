@@ -1,0 +1,248 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"     
+                    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                    xmlns:dxdv="http://schemas.devexpress.com/winfx/2008/xaml/documentviewer"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"           
+                    xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"   
+                    xmlns:bars ="clr-namespace:DevExpress.Xpf.Printing.PreviewControl.Bars;assembly=DevExpress.Xpf.Printing.v15.1"
+                    xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"        
+                    xmlns:designer="clr-namespace:DevExpress.Xpf.Reports.UserDesigner;assembly=DevExpress.Xpf.WpfReportDesigner.v15.1"
+                    xmlns:designernative="clr-namespace:DevExpress.Xpf.Reports.UserDesigner.Native;assembly=DevExpress.Xpf.WpfReportDesigner.v15.1"
+                    xmlns:local="clr-namespace:WpfReportDesigner"
+                    xmlns:office="clr-namespace:DevExpress.Office.Model;assembly=DevExpress.Office.v15.1.Core"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    
+    <dxmvvm:BooleanToObjectConverter x:Key="applicationMenuConverter">
+        <dxmvvm:BooleanToObjectConverter.TrueValue>
+            <dxr:ApplicationMenu>
+                <dxb:BarItemLink BarItemName="{x:Static bars:DefaultPreviewBarItemNames.Save}" />
+                <dxb:BarItemSeparator />
+                <dxb:BarButtonItem Content="Exit" LargeGlyph="{dx:DXImage Image=Close_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.Designer).Commands.Exit, RelativeSource={RelativeSource Self}}" />
+            </dxr:ApplicationMenu>
+        </dxmvvm:BooleanToObjectConverter.TrueValue>
+        <dxmvvm:BooleanToObjectConverter.FalseValue>
+            <dxr:ApplicationMenu>
+                <dxb:BarButtonItem Content="New Report" LargeGlyph="{dx:DXImage Image=New_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.Designer).Commands.NewDocument, RelativeSource={RelativeSource Self}}" IsVisible="{Binding Path=(designer:ReportDesigner.Designer).ActiveDocumentViewSource.IsPersistent, RelativeSource={RelativeSource Self}, Converter={dxmvvm:BooleanNegationConverter}}" />
+                <dxb:BarButtonItem Content="Open Report"  LargeGlyph="{dx:DXImage Image=Open_32x32.png}"  Command="{Binding Path=(designer:ReportDesigner.Designer).Commands.OpenDocument, RelativeSource={RelativeSource Self}}" />
+                <dxb:BarButtonItem Content="Save" LargeGlyph="{dx:DXImage Image=Save_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.Designer).ActiveDocument.Commands.Save, RelativeSource={RelativeSource Self}}" IsEnabled="{Binding Path=(designer:ReportDesigner.Designer).ActiveDocument, RelativeSource={RelativeSource Self}, Converter={dxmvvm:ObjectToBooleanConverter}}" />
+                <dxb:BarButtonItem Content="Save As" LargeGlyph="{dx:DXImage Image=SaveAs_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.Designer).ActiveDocument.Commands.SaveAs, RelativeSource={RelativeSource Self}}" />
+                <dxb:BarItemSeparator />
+                <dxb:BarButtonItem Content="Exit" LargeGlyph="{dx:DXImage Image=Close_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.Designer).Commands.Exit, RelativeSource={RelativeSource Self}}" />
+            </dxr:ApplicationMenu>
+        </dxmvvm:BooleanToObjectConverter.FalseValue>
+    </dxmvvm:BooleanToObjectConverter>
+    
+    <DataTemplate x:Key="CustomizedRibbonTemplate">
+        <dxr:RibbonControl RibbonStyle="Office2010"
+                    ApplicationMenu="{Binding Path=(designer:ReportDesigner.DocumentSelector).PreviewIsOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource applicationMenuConverter}}">
+            <dxr:RibbonDefaultPageCategory>
+                <dxr:RibbonPage Caption="Report Designer" >
+                    <dxr:RibbonPageGroup Caption="Report">
+                        <dxb:BarButtonItem Content="New" Glyph="{dx:DXImage Image=New_16x16.png}" LargeGlyph="{dx:DXImage Image=New_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.Designer).Commands.NewDocument, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Path=(designer:ReportDesigner.Designer).ActiveDocumentViewSource.IsPersistent, RelativeSource={RelativeSource TemplatedParent}, Converter={dxmvvm:BooleanNegationConverter}}" />
+                        <dxb:BarButtonItem Content="Open" Glyph="{dx:DXImage Image=Open_16x16.png}" LargeGlyph="{dx:DXImage Image=Open_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.Designer).Commands.OpenDocument, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <dxb:BarButtonItem Content="Save" Glyph="{dx:DXImage Image=Save_16x16.png}" LargeGlyph="{dx:DXImage Image=Save_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Commands.Save, RelativeSource={RelativeSource TemplatedParent}}" IsEnabled="{Binding Path=(designer:ReportDesigner.DesignerPane).Document, RelativeSource={RelativeSource Self}, Converter={dxmvvm:ObjectToBooleanConverter}}" />
+                        <dxb:BarButtonItem Content="Save As" Glyph="{dx:DXImage Image=SaveAs_16x16.png}" LargeGlyph="{dx:DXImage Image=SaveAs_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Commands.SaveAs, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <dxb:BarButtonItem Content="Preview" Glyph="{dx:DXImage Image=Preview_16x16.png}" LargeGlyph="{dx:DXImage Image=Preview_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.Designer).Commands.OpenPreview, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding Path=(designer:ReportDesigner.DesignerPane).Document, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Edit">
+                        <dxb:BarButtonItem Content="Delete" Glyph="{dx:DXImage Image=Delete_16x16.png}" LargeGlyph="{dx:DXImage Image=Delete_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.Delete, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <dxb:BarItemSeparator />
+                        <dxb:BarButtonItem Content="Cut" Glyph="{dx:DXImage Image=Cut_16x16.png}" LargeGlyph="{dx:DXImage Image=Cut_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.Cut, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <dxb:BarButtonItem Content="Copy" Glyph="{dx:DXImage Image=Copy_16x16.png}" LargeGlyph="{dx:DXImage Image=Copy_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.Copy, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <dxb:BarButtonItem Content="Paste" Glyph="{dx:DXImage Image=Paste_16x16.png}" LargeGlyph="{dx:DXImage Image=Paste_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.Paste, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <dxb:BarItemSeparator />
+                        <dxb:BarButtonItem Content="Undo" Glyph="{dx:DXImage Image=Undo_16x16.png}" LargeGlyph="{dx:DXImage Image=Undo_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.Undo, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <dxb:BarButtonItem Content="Redo" Glyph="{dx:DXImage Image=Redo_16x16.png}" LargeGlyph="{dx:DXImage Image=Redo_32x32.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.Redo, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Font" Glyph="{dx:DXImage Image=FontSize_32x32.png}" IsEnabled="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[FontFamily], RelativeSource={RelativeSource TemplatedParent}, Converter={dxmvvm:ObjectToBooleanConverter}, TargetNullValue=False, FallbackValue=False}">
+                        <dxr:BarButtonGroup>
+                            <dxb:BarEditItem EditWidth="150" ClosePopupOnChangingEditValue="True"
+                                    EditValue="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[FontFamily], RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <dxb:BarEditItem.EditSettings>
+                                    <dxe:FontEditSettings />
+                                </dxb:BarEditItem.EditSettings>
+                            </dxb:BarEditItem>
+                            <dxb:BarEditItem EditWidth="40"
+                                    EditValue="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[FontSize], RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <dxb:BarEditItem.EditSettings>
+                                    <dxe:ComboBoxEditSettings>
+                                        <dxe:ComboBoxEditSettings.ItemsSource>
+                                            <office:PredefinedFontSizeCollection />
+                                        </dxe:ComboBoxEditSettings.ItemsSource>
+                                    </dxe:ComboBoxEditSettings>
+                                </dxb:BarEditItem.EditSettings>
+                            </dxb:BarEditItem>
+                            <dxb:BarSplitButtonItem Glyph="{dx:DXImage Image=ChangeFontStyle_16x16.png}" ActAsDropDown="True">
+                                <dxb:BarSplitButtonItem.PopupControl>
+                                    <dxb:PopupControlContainer>
+                                        <dxe:ColorEdit EditValue="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[ForeColor], RelativeSource={RelativeSource TemplatedParent}}" ShowBorder="False" CloseOwnerPopupOnClick="True" />
+                                    </dxb:PopupControlContainer>
+                                </dxb:BarSplitButtonItem.PopupControl>
+                            </dxb:BarSplitButtonItem>
+                            <dxb:BarSplitButtonItem Glyph="{dx:DXImage Image=FillBackground_16x16.png}" ActAsDropDown="True">
+                                <dxb:BarSplitButtonItem.PopupControl>
+                                    <dxb:PopupControlContainer>
+                                        <dxe:ColorEdit EditValue="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[BackColor], RelativeSource={RelativeSource TemplatedParent}}" ShowBorder="False" CloseOwnerPopupOnClick="True" DefaultColor="White" />
+                                    </dxb:PopupControlContainer>
+                                </dxb:BarSplitButtonItem.PopupControl>
+                            </dxb:BarSplitButtonItem>
+                        </dxr:BarButtonGroup>
+                        <dxr:BarButtonGroup>
+                            <dxb:BarCheckItem Glyph="{dx:DXImage Image=Bold_16x16.png}" IsChecked="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[IsFontBold], RelativeSource={RelativeSource TemplatedParent}}" />
+                            <dxb:BarCheckItem Glyph="{dx:DXImage Image=Italic_16x16.png}" IsChecked="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[IsFontItalic], RelativeSource={RelativeSource TemplatedParent}}" />
+                            <dxb:BarCheckItem Glyph="{dx:DXImage Image=Underline_16x16.png}" IsChecked="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[IsFontUnderline], RelativeSource={RelativeSource TemplatedParent}}" />
+                            <dxb:BarCheckItem Glyph="{dx:DXImage Image=Strikeout_16x16.png}" IsChecked="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[IsFontStrikethrough], RelativeSource={RelativeSource TemplatedParent}}" />
+                            <dxb:BarStaticItem ShowBorder="False">
+                                <dxb:BarStaticItem.ContentTemplate>
+                                    <DataTemplate>
+                                        <Border Width="2" />
+                                    </DataTemplate>
+                                </dxb:BarStaticItem.ContentTemplate>
+                            </dxb:BarStaticItem>
+                            <dxb:BarItemSelector SelectedItem="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[TextHorizontalAlignment], RelativeSource={RelativeSource TemplatedParent}}">
+                                <dxb:BarItemSelector.ItemLinksSource>
+                                    <collections:ArrayList>
+                                        <TextAlignment>Left</TextAlignment>
+                                        <TextAlignment>Center</TextAlignment>
+                                        <TextAlignment>Right</TextAlignment>
+                                        <TextAlignment>Justify</TextAlignment>
+                                    </collections:ArrayList>
+                                </dxb:BarItemSelector.ItemLinksSource>
+                                <dxb:BarItemSelector.ItemTemplate>
+                                    <DataTemplate>
+                                        <ContentControl>
+                                            <dxb:BarCheckItem Glyph="{Binding Converter={designernative:TextAlignmentToGlyphConverter}}"/>
+                                        </ContentControl>
+                                    </DataTemplate>
+                                </dxb:BarItemSelector.ItemTemplate>
+                            </dxb:BarItemSelector>
+                            <dxb:BarStaticItem ShowBorder="False">
+                                <dxb:BarStaticItem.ContentTemplate>
+                                    <DataTemplate>
+                                        <Border Width="2" />
+                                    </DataTemplate>
+                                </dxb:BarStaticItem.ContentTemplate>
+                            </dxb:BarStaticItem>
+                            <dxb:BarItemSelector SelectedItem="{Binding Path=(designer:ReportDesigner.DesignerPane).SelectionToolsModel[VerticalContentAlignment], RelativeSource={RelativeSource TemplatedParent}}">
+                                <dxb:BarItemSelector.ItemLinksSource>
+                                    <collections:ArrayList>
+                                        <VerticalAlignment>Top</VerticalAlignment>
+                                        <VerticalAlignment>Center</VerticalAlignment>
+                                        <VerticalAlignment>Bottom</VerticalAlignment>
+                                    </collections:ArrayList>
+                                </dxb:BarItemSelector.ItemLinksSource>
+                                <dxb:BarItemSelector.ItemTemplate>
+                                    <DataTemplate>
+                                        <ContentControl>
+                                            <dxb:BarCheckItem Glyph="{Binding Converter={designernative:VerticalAlignmentToGlyphConverter}}"/>
+                                        </ContentControl>
+                                    </DataTemplate>
+                                </dxb:BarItemSelector.ItemTemplate>
+                            </dxb:BarItemSelector>
+                        </dxr:BarButtonGroup>
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Arrange">
+                        <dxb:BarSplitButtonItem Content="Bring to Front" Glyph="{dx:DXImage Image=BringToFront_16x16.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.BringToFront, RelativeSource={RelativeSource TemplatedParent}}">
+                            <dxb:BarSplitButtonItem.PopupControl>
+                                <dxb:PopupMenu>
+                                    <dxb:BarButtonItem Content="Bring Forward" Glyph="{dx:DXImage Image=BringForward_16x16.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.BringForward, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    <dxb:BarButtonItem Content="Bring to Front" Glyph="{dx:DXImage Image=BringToFront_16x16.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.BringToFront, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </dxb:PopupMenu>
+                            </dxb:BarSplitButtonItem.PopupControl>
+                        </dxb:BarSplitButtonItem>
+                        <dxb:BarSplitButtonItem Content="Send to Back" Glyph="{dx:DXImage Image=SendToBack_16x16.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SendToBack, RelativeSource={RelativeSource TemplatedParent}}">
+                            <dxb:BarSplitButtonItem.PopupControl>
+                                <dxb:PopupMenu>
+                                    <dxb:BarButtonItem Content="Send Backward" Glyph="{dx:DXImage Image=SendBackward_16x16.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SendBackward, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    <dxb:BarButtonItem Content="Send to Back" Glyph="{dx:DXImage Image=SendToBack_16x16.png}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SendToBack, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </dxb:PopupMenu>
+                            </dxb:BarSplitButtonItem.PopupControl>
+                        </dxb:BarSplitButtonItem>
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Zoom" Glyph="{dx:DXImage Image=Zoom_32x32.png}" >
+                        <dxb:BarButtonItem Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.ZoomOut, RelativeSource={RelativeSource TemplatedParent}}" 
+                                    Content="Zoom out" Glyph="{dx:DXImage Image=ZoomOut_16x16.png}" LargeGlyph="{dx:DXImage Image=ZoomOut_32x32.png}" />
+                        <dxb:BarSubItem Content="Zoom" Glyph="{dx:DXImage Image=Zoom_16x16.png}" LargeGlyph="{dx:DXImage Image=Zoom_32x32.png}">
+                            <dxb:BarSubItem.Items >
+                                <dxb:BarButtonItem Content="800%" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SetZoom, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="8" />
+                                <dxb:BarButtonItem Content="400%" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SetZoom, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="4" />
+                                <dxb:BarButtonItem Content="300%" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SetZoom, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="3" />
+                                <dxb:BarButtonItem Content="200%" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SetZoom, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="2" />
+                                <dxb:BarButtonItem Content="150%" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SetZoom, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="1.5" />
+                                <dxb:BarButtonItem Content="100%" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SetZoom, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="1" KeyGesture="CTRL+0" />
+                                <dxb:BarButtonItem Content="50%" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SetZoom, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="0.5" />
+                                <dxb:BarButtonItem Content="25%" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.SetZoom, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="0.25" />
+                                <dxb:BarItemSeparator />
+
+                                <dxb:BarEditItem Content="Exact" EditValue="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.ZoomFactor, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <dxb:BarEditItem.EditSettings >
+                                        <dxe:TextEditSettings Mask="#### %" MaskType="Numeric" MaskUseAsDisplayFormat="True" />
+                                    </dxb:BarEditItem.EditSettings>
+                                </dxb:BarEditItem>
+                            </dxb:BarSubItem.Items>
+                        </dxb:BarSubItem>
+                        <dxb:BarButtonItem Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Diagram.Commands.ZoomIn, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Content="Zoom In" Glyph="{dx:DXImage Image=ZoomIn_16x16.png}" LargeGlyph="{dx:DXImage Image=ZoomIn_32x32.png}" />
+                    </dxr:RibbonPageGroup>
+                    
+                    <!--Custom Ribbon Group-->
+                    <dxr:RibbonPageGroup Caption="View">
+                        <dxb:BarCheckItem Content="Toolbox" IsChecked="{Binding CustomRibbonCommands.IsToolboxVisible, RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}" LargeGlyph="{dx:DXImage Image=IDE_32x32.png}" Glyph="{dx:DXImage Image=IDE_16x16.png}" />
+                        <dxb:BarCheckItem Content="Side Panel" IsChecked="{Binding CustomRibbonCommands.IsSidePanelVisible, RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}" LargeGlyph="{dx:DXImage Image=Technology_32x32.png}" Glyph="{dx:DXImage Image=Technology_16x16.png}" />
+                    </dxr:RibbonPageGroup>
+                </dxr:RibbonPage>
+            </dxr:RibbonDefaultPageCategory>
+            <dxr:RibbonPageCategory Caption="Preview Tools" IsVisible="{Binding Path=(designer:ReportDesigner.DocumentSelector).PreviewIsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <dxr:RibbonPage Caption="Print Preview"
+                        IsSelected="{Binding Path=(designer:ReportDesigner.DocumentSelector).PreviewIsVisible, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <dxr:RibbonPage.Resources>
+                        <sys:Boolean x:Key="TrueBoolean">True</sys:Boolean>
+                    </dxr:RibbonPage.Resources>
+                    <dxr:RibbonPageGroup Caption="{dxp:PrintingStringId StringId=RibbonPageGroup_File}" 
+                                             dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.FileGroup}">
+                        <bars:SaveBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.Save}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.SaveCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </dxr:RibbonPageGroup>
+
+                    <dxr:RibbonPageGroup Caption="{dxp:PrintingStringId StringId=RibbonPageGroup_Print}" 
+                                             dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.PrintGroup}">
+                        <bars:PrintBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.Print}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.PrintCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        <bars:PrintDirectBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.PrintDirect}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.PrintDirectCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <bars:PageSetupBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.PageSetup}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.PageSetupCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <bars:ScaleBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.Scale}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.ScaleCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </dxr:RibbonPageGroup>
+
+                    <dxr:RibbonPageGroup Caption="{dxp:PrintingStringId StringId=RibbonPageGroup_Navigation}" 
+                                             dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.NavigationGroup}">
+                        <bars:FirstPageBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.FirstPage}"  Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.FirstPageCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <dxdv:PreviousPageBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.PreviousPage}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.PreviousPageCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <dxdv:NextPageBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.NextPage}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.NextPageCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <bars:LastPageBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.LastPage}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.LastPageCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </dxr:RibbonPageGroup>
+
+                    <dxr:RibbonPageGroup Caption="{dxp:PrintingStringId StringId=RibbonPageGroup_Zoom}" 
+                                             dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.ZoomGroup}">
+                        <dxdv:ZoomOutBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.ZoomOut}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.ZoomOutCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <dxdv:ZoomBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.Zoom}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.ZoomCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        <dxdv:ZoomInBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.ZoomIn}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.ZoomInCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </dxr:RibbonPageGroup>
+
+                    <dxr:RibbonPageGroup Caption="{dxp:PrintingStringId StringId=RibbonPageGroup_Export}" 
+                                             dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.ExportGroup}">
+                        <bars:ExportSplitItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.Export}"  Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.ExportSplitCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        <bars:SendSplitItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.Send}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.SendSplitCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </dxr:RibbonPageGroup>
+
+                    <dxr:RibbonPageGroup Caption="{dxp:PrintingStringId StringId=RibbonPageGroup_Document}" 
+                                             dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.DocumentGroup}">
+                        <bars:ParametersBarCheckItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.Parameters}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.ToggleParametersPanelCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        <bars:DocumentMapBarCheckItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.DocumentMap}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.ToggleDocumentMapCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        <bars:FindTextBarItem dxp:DocumentPreviewControl.BarItemName="{x:Static bars:DefaultPreviewBarItemNames.Find}" Command="{Binding Path=(designer:ReportDesigner.DesignerPane).Document.Preview.ActualCommandProvider.ShowFindTextCommand, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{StaticResource TrueBoolean}" />
+                    </dxr:RibbonPageGroup> 
+                </dxr:RibbonPage>
+            </dxr:RibbonPageCategory>
+        </dxr:RibbonControl>
+    </DataTemplate>
+</ResourceDictionary>

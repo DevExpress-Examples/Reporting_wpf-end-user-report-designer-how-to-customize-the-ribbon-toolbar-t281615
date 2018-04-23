@@ -1,0 +1,12 @@
+﻿<Window x:Class="WpfReportDesigner.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxreport="http://schemas.devexpress.com/winfx/2008/xaml/reports/userdesigner"                
+        Title="MainWindow" Height="600" Width="960" xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core">
+    <Window.Resources>
+        <ResourceDictionary Source="CustomizedRibbonTemplate.xaml" />
+    </Window.Resources>
+    <Grid>        
+        <dxreport:ReportDesigner x:Name="reportDesigner" RibbonTemplate="{StaticResource CustomizedRibbonTemplate}" />        
+    </Grid>
+</Window>
