@@ -1,3 +1,11 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [CustomizedRibbonCommands.cs](./CS/CustomizedRibbonCommands.cs) (VB: [CustomizedRibbonCommands.vb](./VB/CustomizedRibbonCommands.vb))
+* [MainWindow.xaml](./CS/MainWindow.xaml) (VB: [MainWindow.xaml](./VB/MainWindow.xaml))
+* [MainWindow.xaml.cs](./CS/MainWindow.xaml.cs) (VB: [MainWindow.xaml](./VB/MainWindow.xaml))
+* [ReportDesignerClassicViewTemplate.xaml](./CS/ReportDesignerClassicViewTemplate.xaml) (VB: [ReportDesignerClassicViewTemplate.xaml](./VB/ReportDesignerClassicViewTemplate.xaml))
+<!-- default file list end -->
 # WPF End-User Report Designer - How to customize the Ribbon toolbar
 
 
