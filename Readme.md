@@ -3,8 +3,8 @@
 
 * [CustomizedRibbonCommands.cs](./CS/CustomizedRibbonCommands.cs) (VB: [CustomizedRibbonCommands.vb](./VB/CustomizedRibbonCommands.vb))
 * [MainWindow.xaml](./CS/CustomizeReportDesignerToolbar/MainWindow.xaml) (VB: [MainWindow.xaml](./VB/CustomizeReportDesignerToolbar/MainWindow.xaml))
-* [MainWindow.xaml.cs](./CS/CustomizeReportDesignerToolbar/MainWindow.xaml.cs) (VB: [MainWindow.xaml](./VB/CustomizeReportDesignerToolbar/MainWindow.xaml))
-* [MainWindow.xaml](./CS/MainWindow.xaml) (VB: [MainWindow.xaml.vb](./VB/MainWindow.xaml.vb))
+* [MainWindow.xaml.cs](./CS/CustomizeReportDesignerToolbar/MainWindow.xaml.cs) (VB: [MainWindow.xaml.vb](./VB/CustomizeReportDesignerToolbar/MainWindow.xaml.vb))
+* [MainWindow.xaml](./CS/MainWindow.xaml) (VB: [MainWindow.xaml](./VB/MainWindow.xaml))
 * [MainWindow.xaml.cs](./CS/MainWindow.xaml.cs) (VB: [MainWindow.xaml.vb](./VB/MainWindow.xaml.vb))
 * [ReportDesignerClassicViewTemplate.xaml](./CS/ReportDesignerClassicViewTemplate.xaml) (VB: [ReportDesignerClassicViewTemplate.xaml](./VB/ReportDesignerClassicViewTemplate.xaml))
 <!-- default file list end -->
