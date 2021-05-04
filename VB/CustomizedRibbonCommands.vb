@@ -21,8 +21,10 @@ Namespace WpfApplicationEUDCustomPropertiesWindow
 		Protected ReadOnly Property ToolboxControl() As LayoutPanel
 			Get
 				If _toolboxControl Is Nothing Then
-                    _toolboxControl = CType(FindDesignerElement(Function(child) child.GetType() Is GetType(LayoutPanel)), LayoutPanel)
-                End If
+					_toolboxControl = CType(FindDesignerElement(Function(child)
+						Return child.GetType() Is GetType(LayoutPanel)
+					End Function), LayoutPanel)
+				End If
 
 				Return _toolboxControl
 			End Get
@@ -31,7 +33,9 @@ Namespace WpfApplicationEUDCustomPropertiesWindow
 		Protected ReadOnly Property SidePanelControl() As TabbedGroup
 			Get
 				If _sidePanelControl Is Nothing Then
-                    _sidePanelControl = CType(FindDesignerElement(Function(child) child.GetType() Is GetType(TabbedGroup)), TabbedGroup)
+					_sidePanelControl = CType(FindDesignerElement(Function(child)
+						Return child.GetType() Is GetType(TabbedGroup)
+					End Function), TabbedGroup)
 				End If
 
 				Return _sidePanelControl
@@ -52,7 +56,9 @@ Namespace WpfApplicationEUDCustomPropertiesWindow
 				If value <> IsToolboxVisible Then
 					If value Then
 						ToolboxControl.SetBinding(LayoutPanel.VisibilityProperty, New Binding() With {
-							.Path = New PropertyPath("(0).PreviewIsOpen", ReportDesigner.DocumentSelectorProperty), .RelativeSource = New RelativeSource(RelativeSourceMode.Self), .Converter = New BooleanToVisibilityConverter() With {.Inverse = True}
+							.Path = New PropertyPath("(0).PreviewIsOpen", ReportDesigner.DocumentSelectorProperty),
+							.RelativeSource = New RelativeSource(RelativeSourceMode.Self),
+							.Converter = New BooleanToVisibilityConverter() With {.Inverse = True}
 						})
 					Else
 						ToolboxControl.Visibility = Visibility.Collapsed
@@ -71,7 +77,9 @@ Namespace WpfApplicationEUDCustomPropertiesWindow
 				If value <> IsSidePanelVisible Then
 					If value Then
 						SidePanelControl.SetBinding(LayoutPanel.VisibilityProperty, New Binding() With {
-							.Path = New PropertyPath("(0).PreviewIsOpen", ReportDesigner.DocumentSelectorProperty), .RelativeSource = New RelativeSource(RelativeSourceMode.Self), .Converter = New BooleanToVisibilityConverter() With {.Inverse = True}
+							.Path = New PropertyPath("(0).PreviewIsOpen", ReportDesigner.DocumentSelectorProperty),
+							.RelativeSource = New RelativeSource(RelativeSourceMode.Self),
+							.Converter = New BooleanToVisibilityConverter() With {.Inverse = True}
 						})
 					Else
 						SidePanelControl.Visibility = Visibility.Collapsed
@@ -89,7 +97,8 @@ Namespace WpfApplicationEUDCustomPropertiesWindow
 		End Sub
 
 		Private Function FindElement(ByVal parent As DependencyObject, ByVal condition As Func(Of DependencyObject, Boolean)) As DependencyObject
-			For i As Integer = 0 To VisualTreeHelper.GetChildrenCount(parent) - 1
+			Dim i As Integer = 0
+			Do While i < VisualTreeHelper.GetChildrenCount(parent)
 				Dim child As DependencyObject = VisualTreeHelper.GetChild(parent, i)
 				If condition(child) Then
 					Return child
@@ -98,7 +107,8 @@ Namespace WpfApplicationEUDCustomPropertiesWindow
 				If result IsNot Nothing Then
 					Return result
 				End If
-			Next i
+				i += 1
+			Loop
 			Return Nothing
 		End Function
 
